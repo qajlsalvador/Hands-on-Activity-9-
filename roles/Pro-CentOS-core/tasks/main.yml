@@ -1,0 +1,28 @@
+---
+- name: Install epel
+  dnf:
+    name: epel-release
+    state: latest
+  when: ansible_distribution == "CentOS"
+
+- name: download prometheus
+  get_url:
+    url: "https://github.com/prometheus/prometheus/releases/download/v2.30.3/prometheus-2.30.3.linux-amd64.tar.gz"
+    dest: /tmp/prometheus-2.30.3.linux-amd64.tar.gz
+
+- name: extracting the prometheus
+  unarchive:
+    src: /tmp/prometheus-2.30.3.linux-amd64.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: move prometheus
+  shell: |
+    mv /tmp/prometheus-2.30.3.linux-amd64/prometheus /usr/local/bin/
+  args:
+    creates: /usr/local/bin/prometheus
+
+- name: Start Prometheus
+  command: nohup /usr/local/bin/prometheus --config.file=/etc/prometheus/prometheus.yml
+  async: 300
+  poll: 0

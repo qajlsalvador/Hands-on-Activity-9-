@@ -1,0 +1,15 @@
+---
+- name: install Prometheus
+  apt:
+    name: prometheus
+    state: latest
+  when: ansible_distribution == "Ubuntu"
+
+- name: Start Prometheus
+  systemd:
+    name: prometheus
+    enabled: yes
+    state: started
+  when: ansible_distribution == "Ubuntu"
+
+

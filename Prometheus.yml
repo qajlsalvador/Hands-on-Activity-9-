@@ -1,0 +1,30 @@
+---
+- hosts: all
+  become: yes
+  pre_tasks:
+
+  - name: update APT cache Ubuntu
+    apt:
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: update APT cache CentOS
+    dnf:
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+
+- hosts: Ubuntu
+  become: true
+  roles:
+    - Pro-Ubuntu-core
+
+- hosts: Ubuntu
+  become: true
+  roles:
+    - Pro-Ubuntu-service
+
+- hosts: CentOS
+  become: true
+  roles:
+    - Pro-CentOS-core
+

@@ -1,0 +1,12 @@
+---
+- name: Restart Prometheus
+  service:
+    name: prometheus
+    state: restarted
+  when: ansible_distribution == "Ubuntu"
+
+- name: Reload Prometheus
+  service:
+    name: prometheus
+    state: reloaded
+  when: ansible_distribution == "Ubuntu"
